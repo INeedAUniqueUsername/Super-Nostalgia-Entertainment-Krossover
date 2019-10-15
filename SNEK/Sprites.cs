@@ -11,7 +11,7 @@ namespace SNEK {
         public static Texture2D player, enemy, plasma, laser, fragment;
         public static void Initialize(ContentManager c) {
             player = c.Load<Texture2D>("Player");
-            enemy = c.Load<Texture2D>("Enemy");
+            enemy = c.Load<Texture2D>("Drone");
             plasma = c.Load<Texture2D>("Plasma");
             laser = c.Load<Texture2D>("Laser");
             fragment = c.Load<Texture2D>("Fragment");

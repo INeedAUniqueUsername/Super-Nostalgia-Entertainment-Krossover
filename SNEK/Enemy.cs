@@ -28,7 +28,8 @@ namespace SNEK {
                 hp -= 10;
                 Console.WriteLine("Enemy-Fragment");
             } else if (other is Laser l) {
-                hp -= 10;
+                hp = 0;
+                l.active = false;
                 Console.WriteLine("Enemy-Laser");
             }
         }

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Point2D = Microsoft.Xna.Framework.Point;
 namespace SNEK {
     class Player : Moving {
         public int fireTimer;
@@ -71,11 +71,24 @@ namespace SNEK {
                     direction += new Point(1, 0);
                 }
             }
-            if(direction != Point.ZERO) {
+
+            Point center = new Point(GraphicsDeviceManager.DefaultBackBufferWidth / 2, GraphicsDeviceManager.DefaultBackBufferHeight / 2);
+            Point offset = new Point(Mouse.GetState().Position.ToVector2()) - center;
+            if(offset.magnitude > 0) {
+                direction = offset;
+                if(direction.magnitude > 1/30f) {
+                    direction = direction.normal * (1 / 30f);
+                }
+            }
+            //Point place = offset.magnitude > 1 ? center + offset.normal * (offset.magnitude - 1) : center;
+            Point place = center;
+            Mouse.SetPosition(place.X, place.Y);
+
+            if (direction != Point.ZERO) {
                 vel += direction.normal * (1 / 30f);
             }
-            if(vel.magnitude > 5) {
-                vel = vel.normal * 5;
+            if(vel.magnitude > 3) {
+                vel = vel.normal * 3;
             }
 
             Point dest = pos + vel;
@@ -103,9 +116,13 @@ namespace SNEK {
             if(fireTimer > 0) {
                 fireTimer--;
             }
-            if(space && vel.magnitude > 0.1 && fireTimer == 0) {
+            if(space && vel.magnitude > 0.05 && fireTimer == 0) {
                 fireTimer = 20;
-                g.Add(new Laser(this, (pos + vel.normal).Constrain(g), vel.normal));
+                g.Add(new Laser(this, (pos + vel.normal).Constrain(g), vel.normal * 2));
+                g.Add(new Laser(this, (pos + vel.normal.rotate(-30 * Math.PI / 180)).Constrain(g), vel.normal * 2));
+                g.Add(new Laser(this, (pos + vel.normal.rotate(-90 * Math.PI / 180)).Constrain(g), vel.normal * 2));
+                g.Add(new Laser(this, (pos + vel.normal.rotate(30 * Math.PI / 180)).Constrain(g), vel.normal * 2));
+                g.Add(new Laser(this, (pos + vel.normal.rotate(90 * Math.PI/180)).Constrain(g), vel.normal * 2));
             }
             /*
             Point lastPos = pos;

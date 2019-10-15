@@ -27,7 +27,7 @@ namespace SNEK {
         }
     }
     class Laser : Moving {
-        bool active;
+        public bool active;
         public Entity source { get; private set; }
         public Point pos { get; private set; }
         public Point vel { get; private set; }
@@ -36,7 +36,7 @@ namespace SNEK {
             this.source = source;
             this.pos = pos;
             this.vel = vel;
-            lifetime = 75;
+            lifetime = 20;
             active = true;
         }
         public void Collide(World g, Entity other) {
@@ -50,6 +50,7 @@ namespace SNEK {
                 player.Collide(g, this);
                 active = false;
             } else if (other is Enemy enemy) {
+                Console.WriteLine("Enemy hit");
                 enemy.Collide(g, this);
                 active = false;
             }
@@ -74,11 +75,11 @@ namespace SNEK {
                 pos = pos.Constrain(g);
 
                 if (lastPos.X != pos.X || lastPos.Y != pos.Y) {
-                    g.Place(new LaserTrail(lastPos, lifetime / 25f));
+                    g.Place(new LaserTrail(lastPos, lifetime / 15f));
                 }
 
                 if (g.Collide(pos, out Entity other)) {
-                    Console.WriteLine("Collision");
+                    Console.WriteLine("Laser Collision " + other.GetType().Name);
                     Collide(g, other);
                 }
             }
@@ -88,7 +89,7 @@ namespace SNEK {
             }
         }
         public void Draw(SpriteBatch g) {
-            g.Draw(Sprites.laser, pos.round() * 16, null, Color.White * (lifetime > 25 ? 1 : lifetime / 25f), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f); //new Rectangle((pos - new Point(8, 8)).point, new Point(16, 16).point);
+            g.Draw(Sprites.laser, pos.round() * 16, null, Color.White * (lifetime > 15 ? 1 : lifetime / 15f), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f); //new Rectangle((pos - new Point(8, 8)).point, new Point(16, 16).point);
         }
     }
     class Fragment : Moving {

@@ -11,6 +11,7 @@ namespace SNEK {
 
         public int width, height;
         public HashSet<Entity> entities;
+        private HashSet<Entity> _entities;
         public Entity[,] grid;
         public Entity this[Point p] {
             get => grid[p.X, p.Y];
@@ -21,7 +22,8 @@ namespace SNEK {
             this.width = width;
             this.height = height;
             grid = new Entity[width, height];
-            entities = new HashSet<Entity>();
+            _entities = new HashSet<Entity>();
+            entities = _entities;
         }
         public bool Collide(Point p, out Entity e) {
             e = this[p];
@@ -29,24 +31,24 @@ namespace SNEK {
         }
         public void Place(Entity e) {
             this[e.pos] = e;
-            entities.Add(e);
+            _entities.Add(e);
         }
         public void Add(Entity e) {
-            entities.Add(e);
+            _entities.Add(e);
         }
         public void Remove(Entity e) {
-            entities.Remove(e);
+            _entities.Remove(e);
         }
         public void Update() {
             grid = new Entity[width, height];
-            HashSet<Entity> entities2 = entities;
-            entities = new HashSet<Entity>();
-            foreach(Entity e in entities2) {
+            _entities = new HashSet<Entity>();
+            foreach(Entity e in entities) {
                 e.Update(this);
             }
+            entities = _entities;
         }
         public void Draw(SpriteBatch g) {
-            foreach(Entity e in entities) {
+            foreach(Entity e in _entities) {
                 e.Draw(g);
             }
         }

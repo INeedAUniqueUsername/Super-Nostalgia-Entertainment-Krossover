@@ -9,6 +9,7 @@ using Point2 = Microsoft.Xna.Framework.Point;
 namespace SNEK {
     class Point {
         public static Point ZERO = new Point(0, 0);
+        public static Point ANGLE_ZERO = new Point(1, 0);
         public double x, y;
         public int X => (int) Math.Round(x);
         public int Y => (int) Math.Round(y);
@@ -16,6 +17,15 @@ namespace SNEK {
             this.x = x;
             this.y = y;
         }
+        public Point(double angle) {
+            this.x = Math.Cos(angle);
+            this.y = Math.Sin(angle);
+        }
+        public Point(Vector2 v) {
+            this.x = v.X;
+            this.y = v.Y;
+        }
+        public double angle => Math.Atan2(y, x);
         public double magnitude => Math.Sqrt(x * x + y * y);
         public Point normal => new Point(x / magnitude, y / magnitude);
         public Point round() => new Point(X, Y);
@@ -26,6 +36,7 @@ namespace SNEK {
         }
         public static Point operator -(Point p1, Point p2) => new Point(p1.x - p2.x, p1.y - p2.y);
         public static Point operator *(Point p, double scale) => new Point(p.x * scale, p.y * scale);
+        public Point rotate(double angle) => new Point(magnitude * Math.Cos(this.angle + angle), magnitude * Math.Sin(this.angle + angle));
     }
     static class PointHelper {
         public static Point Constrain(this Point pos, World g) {
