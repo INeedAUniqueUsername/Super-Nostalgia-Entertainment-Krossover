@@ -95,28 +95,38 @@ namespace SNEK {
     class Fragment : Moving {
         public Point pos { get; private set; }
         public Point vel { get; private set; }
+        int lifetime;
         public Fragment(Point pos, Point vel) {
             this.pos = pos;
             this.vel = vel;
+            lifetime = 125;
         }
         public void Update(World g) {
             pos += vel;
-            if(g.Collide(pos, out var other)) {
-                if(other is Fragment f) {
+            pos = pos.Constrain(g);
+            bool active = true;
+            if (g.Collide(pos, out var other)) {
+                if (other is Fragment f) {
                     //Pass through
-                } else if(other is Plasma p) {
+                } else if (other is Plasma p) {
                     //Pass through
+                } else if(other is Laser l) {
+
                 } else if(other is Player player) {
                     player.Collide(g, this);
+                    active = false;
                 } else if(other is Enemy enemy) {
                     enemy.Collide(g, this);
+                    active = false;
                 }
-            } else {
+            }
+            lifetime--;
+            if(active && lifetime > 0) {
                 g.Place(this);
             }
         }
         public void Draw(SpriteBatch g) {
-            g.Draw(Sprites.fragment, pos.round() * 16, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f); //new Rectangle((pos - new Point(8, 8)).point, new Point(16, 16).point);
+            g.Draw(Sprites.fragment, pos.round() * 16, null, Color.White * (lifetime > 25 ? 1 : lifetime / 25f), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f); //new Rectangle((pos - new Point(8, 8)).point, new Point(16, 16).point);
         }
     }
 }

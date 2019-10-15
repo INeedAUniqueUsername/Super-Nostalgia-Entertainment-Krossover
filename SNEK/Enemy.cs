@@ -11,7 +11,9 @@ namespace SNEK {
         public int hp;
         public Point pos { get; private set; }
         public Point vel { get; private set; }
-        public Enemy(Point pos) {
+        Player p;
+        public Enemy(Player p, Point pos) {
+            this.p = p;
             hp = 100;
             this.pos = pos;
             vel = new Point(0, 0);
@@ -34,11 +36,25 @@ namespace SNEK {
             }
         }
         public void Update(World g) {
+            Point target = pos.Closest(p.pos, p.pos + g.N, p.pos + g.NE, p.pos + g.E, p.pos + g.SE, p.pos + g.S, p.pos + g.SW, p.pos + g.W, p.pos + g.NW);
+            Point direction = (target - pos).normal;
+            //If we're turning around, then we decelerate faster
+            if(direction.dot(vel) < 0) {
+                vel += direction * (1 / 30f);
+            } else {
+                vel += direction * (1 / 60f);
+            }
+            if(vel.magnitude > 2) {
+                vel = vel.normal * 2;
+            }
+
             Point lastPos = pos;
             pos += vel;
+            pos = pos.Constrain(g);
             if (lastPos.X != pos.X || lastPos.Y != pos.Y) {
                 g.Place(new Plasma(this, lastPos, 10));
             }
+
             if (g.Collide(pos, out Entity other)) {
                 if(other is Player p) {
                     p.Collide(g, this);
@@ -48,6 +64,10 @@ namespace SNEK {
             }
             if (hp > 0) {
                 g.Place(this);
+            } else {
+                for (double a = 0; a < 2 * Math.PI; a += Math.PI / 3) {
+                    g.Place(new Fragment(pos, new Point(vel.angle + a + g.r.NextDouble() * Math.PI/6) * 2));
+                }
             }
         }
 

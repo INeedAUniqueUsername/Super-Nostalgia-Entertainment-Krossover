@@ -37,8 +37,9 @@ namespace SNEK {
         public static Point operator -(Point p1, Point p2) => new Point(p1.x - p2.x, p1.y - p2.y);
         public static Point operator *(Point p, double scale) => new Point(p.x * scale, p.y * scale);
         public Point rotate(double angle) => new Point(magnitude * Math.Cos(this.angle + angle), magnitude * Math.Sin(this.angle + angle));
+        public double dot(Point p) => x * p.x + y * p.y;
     }
-    static class PointHelper {
+    static class Points {
         public static Point Constrain(this Point pos, World g) {
             if (pos.X >= g.width) {
                 pos.x -= g.width;
@@ -54,5 +55,17 @@ namespace SNEK {
             }
             return pos;
         }
+        public static Point Closest(this Point pos, params Point[] points) {
+            Point result = points[0];
+            double resultDistance = (pos - result).magnitude;
+            foreach(Point p in points.Skip(1)) {
+                double distance = (pos - p).magnitude;
+                if(distance < resultDistance) {
+                    result = p;
+                }
+            }
+            return result;
+        }
+
     }
 }

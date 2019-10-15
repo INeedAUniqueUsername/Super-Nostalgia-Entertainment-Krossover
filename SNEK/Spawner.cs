@@ -9,8 +9,11 @@ namespace SNEK {
     class Spawner : Entity {
         int wait = 30;
         int count = 1;
+        Player p;
         public Point pos => null;
-
+        public Spawner(Player p) {
+            this.p = p;
+        }
         public void Draw(SpriteBatch g) {
         }
 
@@ -26,7 +29,7 @@ namespace SNEK {
                 Console.WriteLine("Wave");
                 count++;
                 for(int i = 0; i < count; i++) {
-                    w.Place(new Enemy(new Point(w.r.NextDouble() * w.width, w.r.NextDouble() * w.height).Constrain(w)));
+                    w.Place(new Enemy(p, new Point(w.r.NextDouble() * w.width, w.r.NextDouble() * w.height).Constrain(w)));
                 }
             } 
         }

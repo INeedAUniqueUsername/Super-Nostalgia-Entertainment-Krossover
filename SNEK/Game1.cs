@@ -31,8 +31,9 @@ namespace SNEK {
             // TODO: Add your initialization logic here
 
             world = new World(1920/16, 1080/16);
-            world.Add(new Player(new Point(world.width/2, world.height / 2)));
-            world.Add(new Spawner());
+            var p = new Player(new Point(world.width / 2, world.height / 2));
+            world.Add(p);
+            world.Add(new Spawner(p));
 
             base.Initialize();
         }
