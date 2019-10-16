@@ -1,0 +1,4 @@
+﻿namespace SNEK {
+    interface GameScreen {
+    }
+}

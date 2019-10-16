@@ -66,6 +66,9 @@ namespace SNEK {
             try {
                 if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                     Exit();
+                else if(Keyboard.GetState().IsKeyDown(Keys.Enter)) {
+                    Initialize();
+                }
                 world.Update();
                 base.Update(gameTime);
             } catch(Exception e) {

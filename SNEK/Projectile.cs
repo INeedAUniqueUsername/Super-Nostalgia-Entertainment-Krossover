@@ -89,7 +89,7 @@ namespace SNEK {
             }
         }
         public void Draw(SpriteBatch g) {
-            g.Draw(Sprites.laser, pos.round() * 16, null, Color.White * (lifetime > 15 ? 1 : lifetime / 15f), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f); //new Rectangle((pos - new Point(8, 8)).point, new Point(16, 16).point);
+            g.Draw(Sprites.laser, pos.round() * 16, null, Color.White * (lifetime > 10 ? 1 : lifetime / 10f), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f); //new Rectangle((pos - new Point(8, 8)).point, new Point(16, 16).point);
         }
     }
     class Fragment : Moving {

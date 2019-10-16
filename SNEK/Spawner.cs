@@ -25,11 +25,13 @@ namespace SNEK {
             }
             wait = 30;
             Console.WriteLine("Spawner");
-            if (w.entities.Count(e => e is Enemy) == 0) {
+            if (w.entities.Count(e => e is Enemy) < 2) {
                 Console.WriteLine("Wave");
                 count++;
                 for(int i = 0; i < count; i++) {
-                    w.Place(new Enemy(p, new Point(w.r.NextDouble() * w.width, w.r.NextDouble() * w.height).Constrain(w)));
+                    w.Place(new Enemy(p, new Point(w.r.NextDouble() * w.width, w.r.NextDouble() * w.height).Constrain(w)) {
+                        exhaustTime = 10 + i * 2
+                    });
                 }
             } 
         }

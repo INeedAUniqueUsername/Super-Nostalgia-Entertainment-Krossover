@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace SNEK {
     class Sprites {
-        public static Texture2D player, enemy, plasma, laser, fragment;
+        public static Texture2D logo, player, enemy, plasma, laser, fragment;
         public static void Initialize(ContentManager c) {
+            //logo = c.Load<Texture2D>("Logo");
             player = c.Load<Texture2D>("Player");
             enemy = c.Load<Texture2D>("Drone");
             plasma = c.Load<Texture2D>("Plasma");
